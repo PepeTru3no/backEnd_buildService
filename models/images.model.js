@@ -1,16 +1,13 @@
-export const Services = (sequelize, Sequelize) => {
-    const services = sequelize.define("services", {
-        name: {
+export const Images = (sequelize, Sequelize) => {
+    const images = sequelize.define("images", {
+        sample_image: {
             type: Sequelize.STRING
         },
-        description: {
-            type: Sequelize.STRING
-        },
-        user_id: {
+        service_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {         
-              model: 'users',
+              model: 'services',
               key: 'id'
             }            
         }
@@ -20,5 +17,5 @@ export const Services = (sequelize, Sequelize) => {
             updatedAt: false,
         }
     );
-    return services;
+    return images;
 }

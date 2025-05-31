@@ -3,6 +3,7 @@ import cors from 'cors';
 import {config} from 'dotenv';
 import db from './models/index.js';
 import servicesRoutes from './routers/services.router.js';
+import usersRoutes from './routers/users.router.js';
 
 config();
 const app= express();
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(cors());
 app.listen(serverPort, console.log(`run in port ${serverPort}`));
 app.use('/services', servicesRoutes);
+app.use('/users', usersRoutes);
 
 /* db.sequelize.sync()
 .then(() => {

@@ -1,18 +1,18 @@
 import db from "../models/index.js";
-const Services = db.services;
+const Users = db.users;
 const Op = db.Sequelize.Op;
 
-export const getServices=async(req, res)=>{
+export const getUsers=async(req, res)=>{
     try {
-        const services = await Services.findAll();
-        res.json(services);
+        const users = await Users.findAll();
+        res.json(users);
     } catch (error) {
         res.status(500).json({'message':error.message});
     }
 }
 
-export const createService= async(req, res)=>{
-    await Services.create(req.body)
+export const createUser= async(req, res)=>{
+    await Users.create(req.body)
     .then(data=>{
         res.status(200).json(data);
     })
