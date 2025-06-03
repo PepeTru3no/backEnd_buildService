@@ -1,0 +1,156 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "desafio",
+    "collectionId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+    "dateExported": "2025-05-31T19:04:56.587Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "a8f20a11-5296-4f69-9b83-8f48b3437c28",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "get services",
+            "url": "http://localhost:3000/services",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2025-05-31T19:02:27.634Z",
+            "modified": "2025-05-31T19:02:27.634Z",
+            "headers": []
+        },
+        {
+            "_id": "04920440-ea15-4021-a3c7-d02329d722a7",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "get users",
+            "url": "http://localhost:3000/users",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2025-05-31T19:02:47.687Z",
+            "modified": "2025-05-31T19:02:47.687Z",
+            "headers": []
+        },
+        {
+            "_id": "e53c7820-7f72-42af-b181-840b6576fae5",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "post users",
+            "url": "http://localhost:3000/users",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2025-05-31T19:03:06.783Z",
+            "modified": "2025-05-31T19:03:06.783Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"name\": \"demian\",\n    \"last_name\": \"vinet\",\n    \"email\": \"demianvinetr@gmail.com\",\n    \"age\": 19,\n    \"state\": \"activo\",\n    \"username\": \"demiansirijillo\",\n    \"password\": \"dadedo1983\",\n    \"phone\": \"+56955531858\"\n  }",
+                "form": []
+            }
+        },
+        {
+            "_id": "b40cedb9-5e46-4fcd-b075-cbfa1711ffe4",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "post images",
+            "url": "http://localhost:3000/images",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2025-05-31T19:03:20.119Z",
+            "modified": "2025-05-31T19:03:20.119Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"sample_image\": \"otar imagen de muestra de otro id\",\n    \"service_id\": 1\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "ac2b79fd-9f3e-4245-9a69-2d5fd1be073d",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "post favorite",
+            "url": "http://localhost:3000/favorites",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2025-05-31T19:03:30.591Z",
+            "modified": "2025-05-31T19:03:30.591Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"user_id\": 3,\n    \"service_id\": 1\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "9bcaa5b5-7947-43e0-95f2-b39e8926632e",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "get favorite",
+            "url": "http://localhost:3000/favorites/3",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2025-05-31T19:03:40.455Z",
+            "modified": "2025-05-31T19:03:40.455Z",
+            "headers": []
+        },
+        {
+            "_id": "bb1c2720-c716-4f18-a329-8bd34a44f644",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "post comment",
+            "url": "http://localhost:3000/comments",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2025-05-31T19:03:55.543Z",
+            "modified": "2025-05-31T19:03:55.543Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"comment\": \"comentario de otro servicio\",\n    \"user_id\":3,\n    \"service_id\": 3\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "42b49a77-69f4-4f3f-b872-7f1934596e16",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "get comment",
+            "url": "http://localhost:3000/comments",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2025-05-31T19:04:04.783Z",
+            "modified": "2025-05-31T19:04:04.783Z",
+            "headers": []
+        },
+        {
+            "_id": "02332765-9c8c-46f5-b83d-939ea24c0ab7",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "get images",
+            "url": "http://localhost:3000/images/1",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2025-05-31T19:04:12.159Z",
+            "modified": "2025-05-31T19:04:12.159Z",
+            "headers": []
+        },
+        {
+            "_id": "bbca957e-a93b-4cd3-9d15-5f229941896b",
+            "colId": "93a4efa1-ef25-47be-8a22-09accb0d6cb9",
+            "containerId": "",
+            "name": "post service",
+            "url": "http://localhost:3000/services",
+            "method": "POST",
+            "sortNum": 100000,
+            "created": "2025-05-31T19:04:23.663Z",
+            "modified": "2025-05-31T19:04:23.663Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"instalacion de cornisas\",\n  \"description\":\"finas terminaciones\",\n  \"user_id\": 3\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "-feWVwGhpQemxeefNBilmlSmyhcqe1PtqF4EdMpCgymZGkdWDdh7obMd2WaX99LwngB5UzrqGKOeWjbPLLTrFg"
+}
