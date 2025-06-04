@@ -28,22 +28,20 @@ export const addStratMiddleware = async (req, res, next) => {
 export const loginMiddleware = async (req, res, next) => {
     const { email, password } = req.body;
     const url = req.url;
-    let passCrypt;
     console.log(`Fecha de la consulta: ${new Date()}; URL consultada: ${url}; Datos recibidas: `, req.body);
     try {
         if (!email.trim() || !password.trim()) {
-
+            return res.status(400).json({ message: "Los campos no deben estar vacios" });
         } else if (!emailFormat.test(email)) {
-
+            return res.status(400).json({ message: 'El formato de correo es erroneo' });
         }
-        passCrypt = bcrypt.hashSync(password);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 
     req.data = {
         email,
-        password: passCrypt
+        password
     };
     next();
 }

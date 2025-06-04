@@ -3,6 +3,7 @@ import db from "../models/index.js";
 import { where } from "sequelize";
 import jwt from 'jsonwebtoken';
 import { config } from "dotenv";
+import bcrypt from "bcryptjs";
 const Users = db.users;
 const Op = db.Sequelize.Op;
 config();
@@ -47,12 +48,18 @@ export const login=async (req, res) => {
     const {email, password}= req.data;
     const secret= process.env.SECRET;
     try {
-        const user = await Users.findAll({where:{email:email, password: password}});
-        if(!user){
-            return res.status(400).json({message: "usuario inexistente"});    
+        const  users = await Users.findAll({where:{email:email}});        
+        if(!users || !users[0].dataValues.id){
+            return res.status(400).json({message: "Usuario inexistente"});    
         }
+        const user= users[0].dataValues;
+        console.log(user);
+        const isLogger = bcrypt.compareSync(password, user.password);   
+        if(!isLogger){
+            return res.status(400).json({message: "Usuario o contraseña erroneos"});
+        }   
         const token = jwt.sign({email}, secret);
-        res.json({token});
+        res.json({token, user});
     } catch (error) {
         res.status(500).json({message: error.message});
     }
