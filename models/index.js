@@ -7,7 +7,6 @@ import { Images } from "./images.model.js";
 import { SavedService } from "./saved_service.model.js";
 
 const db={};
-
 db.Sequelize= Sequelize;
 db.sequelize= sequelize;
 db.services=Services(sequelize,Sequelize);
