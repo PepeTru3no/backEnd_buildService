@@ -4,8 +4,12 @@ const Comments = db.comments;
 const Op = db.Sequelize.Op;
 
 export const getComments = async (req, res) => {
+    const { limit } = req.query;
+    const pagination = {
+        limit: limit
+    }
     try {
-        const comments = await Comments.findAll();
+        const comments = await Comments.findAll(pagination);
         res.json(comments);
     } catch (error) {
         res.status(500).json({ 'message': error.message });

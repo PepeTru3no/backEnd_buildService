@@ -1,23 +1,33 @@
 import { where } from "sequelize";
 import db from "../models/index.js";
-const { services: Services, images: Images, comments: Comments } = db;
+const { services: Services, images: Images, comments: Comments, users: Users } = db;
 const Op = db.Sequelize.Op;
 
 export const getServices = async (req, res) => {
+    const { limit, page, order } = req.query;
+    const offset = page ? (page - 1) * limit : 0;
+    const [field, direction] = order ? order.split('_') : 'id_ASC'.split('_');
+    const pagination = {
+        limit: limit, // Número de registros por página
+        offset: offset, // Desplazamiento
+        order: [[field, direction]],
+    }
     try {
-        const services = await Services.findAll();
-        const response = await Promise.all(
+        const { rows: services, count } = await Services.findAndCountAll(pagination);
+        let response = await Promise.all(
             services.map(async service => {
                 const imgs = await Images.findAll({ where: { service_id: service.dataValues.id } });
+                const user = await Users.findOne({ where: { id: service.dataValues.user_id } });
                 return {
                     id: service.dataValues.id,
                     name: service.dataValues.name,
                     description: service.dataValues.description,
-                    images: imgs.map(img => img.dataValues)
+                    images: imgs.map(img => img.dataValues),
+                    user: user
                 };
             })
         );
-        res.json(response);
+        res.json({ response, count });
     } catch (error) {
         res.status(500).json({ 'message': error.message });
     }
@@ -37,7 +47,7 @@ export const getServiceById = async (req, res) => {
     const { id } = req.params;
     try {
         const service = await Services.findOne({ where: { id: id } })
-        if(!service){
+        if (!service) {
             return res.status(400).json({ message: 'servicio no encontrado' });
         }
         const imgs = await Images.findAll({ where: { service_id: id } });
