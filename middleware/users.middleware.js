@@ -19,8 +19,7 @@ export const addStratMiddleware = async (req, res, next) => {
     }
     req.data = {
         id,
-        stars,
-        newStars
+        stars:nStars
     }
     next();
 }

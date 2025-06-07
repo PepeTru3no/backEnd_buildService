@@ -30,37 +30,47 @@ export const createUser = async (req, res) => {
 }
 
 export const addStars = async (req, res) => {
-    const {id,stars}= req.data;
-    Users.update({stars: stars},{where:{id:id}})
-    .then(num=>{
-        if(num == 1 ){
-            res.status(200).json({message:'Estrellas actualizadas'});
-        }else{
-            res.status(404).json({message:'El registro no existe'});
-        }
-    })
-    .catch(err=>{
-        res.status(500).json({message: err.message});
-    });
-} 
+    const { id, stars } = req.data;
+    Users.update({ stars: stars }, { where: { id: id } })
+        .then(num => {
+            if (num == 1) {
+                res.status(200).json({ message: 'Estrellas actualizadas' });
+            } else {
+                res.status(404).json({ message: 'El registro no existe' });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({ message: err.message });
+        });
+}
 
-export const login=async (req, res) => {
-    const {email, password}= req.data;
-    const secret= process.env.SECRET;
+export const login = async (req, res) => {
+    const { email, password } = req.data;
+    const secret = process.env.SECRET;
     try {
-        const  users = await Users.findAll({where:{email:email}});        
-        if(!users || !users[0].dataValues.id){
-            return res.status(400).json({message: "Usuario inexistente"});    
+        const users = await Users.findAll({ where: { email: email } });
+        if (!users || !users[0].dataValues.id) {
+            return res.status(400).json({ message: "Usuario inexistente" });
         }
-        const user= users[0].dataValues;
+        const user = users[0].dataValues;
         console.log(user);
-        const isLogger = bcrypt.compareSync(password, user.password);   
-        if(!isLogger){
-            return res.status(400).json({message: "Usuario o contraseña erroneos"});
-        }   
-        const token = jwt.sign({email}, secret);
-        res.json({token, user});
+        const isLogger = bcrypt.compareSync(password, user.password);
+        if (!isLogger) {
+            return res.status(400).json({ message: "Usuario o contraseña erroneos" });
+        }
+        const token = jwt.sign({ email }, secret);
+        res.json({ token, user });
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const deleteUser = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Users.destroy({where:{id:id}});
+        res.status(200).json({ message: 'Usuario eliminado correctamente' });        
+    } catch (error) {
+        res.status(500).json({ message: err.message });
     }
 }

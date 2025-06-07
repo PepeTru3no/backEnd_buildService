@@ -23,3 +23,5 @@ app.use('/comments', commentRoutes);
 app.use('/favorites', favoriteRoutes);
 app.use('/uploads', express.static('uploads')); // Servir imágenes
 app.use(bodyParser.urlencoded({extended: true}))
+
+export default app;
