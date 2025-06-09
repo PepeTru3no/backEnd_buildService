@@ -1,76 +1,94 @@
 import { now } from "sequelize/lib/utils";
 import db from "../models/index.js";
-import { where } from "sequelize";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 import bcrypt from "bcryptjs";
-const Users = db.users;
-const Op = db.Sequelize.Op;
+
 config();
 
+const Users = db.users;
+const Op = db.Sequelize.Op;
+
 export const getUsers = async (req, res) => {
-    try {
-        const users = await Users.findAll();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ 'message': error.message });
-    }
-}
+  try {
+    const users = await Users.findAll();
+    // Para seguridad, no enviar passwords al cliente
+    const safeUsers = users.map((user) => {
+      const { password, ...rest } = user.dataValues;
+      return rest;
+    });
+    res.json(safeUsers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const createUser = async (req, res) => {
-    const user = req.data;
-    await Users.create(user)
-        .then(data => {
-            delete data.password;
-            res.status(201).json(data);
-        })
-        .catch(err => {
-            res.status(500).json({ message: err.message })
-        });
-}
+  const user = req.data;
+  try {
+    const data = await Users.create(user);
+    // No enviar contraseña en la respuesta
+    const { password, ...userWithoutPass } = data.dataValues;
+    res.status(201).json(userWithoutPass);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 export const addStars = async (req, res) => {
-    const { id, stars } = req.data;
-    Users.update({ stars: stars }, { where: { id: id } })
-        .then(num => {
-            if (num == 1) {
-                res.status(200).json({ message: 'Estrellas actualizadas' });
-            } else {
-                res.status(404).json({ message: 'El registro no existe' });
-            }
-        })
-        .catch(err => {
-            res.status(500).json({ message: err.message });
-        });
-}
+  const { id, stars } = req.data;
+  try {
+    const [num] = await Users.update({ stars: stars }, { where: { id: id } });
+    if (num === 1) {
+      res.status(200).json({ message: "Estrellas actualizadas" });
+    } else {
+      res.status(404).json({ message: "El registro no existe" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 export const login = async (req, res) => {
-    const { email, password } = req.data;
-    const secret = process.env.SECRET;
-    try {
-        const users = await Users.findAll({ where: { email: email } });
-        if (!users || !users[0].dataValues.id) {
-            return res.status(400).json({ message: "Usuario inexistente" });
-        }
-        const user = users[0].dataValues;
-        console.log(user);
-        const isLogger = bcrypt.compareSync(password, user.password);
-        if (!isLogger) {
-            return res.status(400).json({ message: "Usuario o contraseña erroneos" });
-        }
-        const token = jwt.sign({ email }, secret);
-        res.json({ token, user });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+  const { email, password } = req.data;
+  const secret = process.env.SECRET;
+  try {
+    const user = await Users.findOne({ where: { email } });
+    if (!user) {
+      return res.status(400).json({ message: "Usuario inexistente" });
     }
-}
+
+    const isLogged = bcrypt.compareSync(password, user.password);
+    if (!isLogged) {
+      return res
+        .status(400)
+        .json({ message: "Usuario o contraseña incorrectos" });
+    }
+
+    // Firma el token con más datos útiles (puedes agregar id o roles)
+    const token = jwt.sign({ id: user.id, email: user.email }, secret, {
+      expiresIn: "1h",
+    });
+
+    // No enviar password en respuesta
+    const { password: pass, ...userWithoutPass } = user.dataValues;
+
+    res.json({ token, user: userWithoutPass });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 export const deleteUser = async (req, res) => {
-    const { id } = req.params;
-    try {
-        await Users.destroy({where:{id:id}});
-        res.status(200).json({ message: 'Usuario eliminado correctamente' });        
-    } catch (error) {
-        res.status(500).json({ message: err.message });
+  const { id } = req.params;
+  try {
+    const deleted = await Users.destroy({ where: { id } });
+    if (deleted) {
+      res.status(200).json({ message: "Usuario eliminado correctamente" });
+    } else {
+      res.status(404).json({ message: "Usuario no encontrado" });
     }
-}
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
