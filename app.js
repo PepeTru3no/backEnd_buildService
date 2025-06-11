@@ -15,12 +15,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use("/services", servicesRoutes);
-app.use("/users", usersRoutes);
-app.use("/images", imagesRoutes);
-app.use("/comments", commentRoutes);
-app.use("/favorites", favoriteRoutes);
-app.use("/uploads", express.static("uploads"));
+app.use("/.netlify/functions/services", servicesRoutes);
+app.use("/.netlify/functions/users", usersRoutes);
+app.use("/.netlify/functions/images", imagesRoutes);
+app.use("/.netlify/functions/comments", commentRoutes);
+app.use("/.netlify/functions/favorites", favoriteRoutes);
+app.use("/.netlify/functions/uploads", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 export default app;
