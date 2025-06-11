@@ -1,5 +1,5 @@
 export const Services = (sequelize, Sequelize) => {
-    const services = sequelize.define("services", {
+    return sequelize.define("services", {
         name: {
             type: Sequelize.STRING
         },
@@ -26,5 +26,4 @@ export const Services = (sequelize, Sequelize) => {
             updatedAt: false,
         }
     );
-    return services;
 }

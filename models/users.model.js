@@ -1,5 +1,5 @@
 export const Users = (sequelize, Sequelize) => {
-    const users = sequelize.define("users", {
+    return sequelize.define("users", {
         name: {
             type: Sequelize.STRING
         },
@@ -36,5 +36,4 @@ export const Users = (sequelize, Sequelize) => {
             updatedAt: false,
         }
     );
-    return users;
 }

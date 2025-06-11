@@ -1,5 +1,5 @@
 export const Comments = (sequelize, Sequelize) => {
-    const comments = sequelize.define("comments", {
+    return sequelize.define("comments", {
         comment: {
             type: Sequelize.STRING
         },
@@ -31,5 +31,4 @@ export const Comments = (sequelize, Sequelize) => {
             updatedAt: false,
         }
     );
-    return comments;
 }

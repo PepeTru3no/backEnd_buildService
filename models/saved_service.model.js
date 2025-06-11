@@ -1,5 +1,5 @@
 export const SavedService = (sequelize, Sequelize) => {
-    const saved_service = sequelize.define("saved_services", {
+    return sequelize.define("saved_services", {
         user_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -22,5 +22,4 @@ export const SavedService = (sequelize, Sequelize) => {
             updatedAt: false,
         }
     );
-    return saved_service;
 }

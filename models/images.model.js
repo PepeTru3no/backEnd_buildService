@@ -1,5 +1,5 @@
 export const Images = (sequelize, Sequelize) => {
-    const images = sequelize.define("images", {
+    return sequelize.define("images", {
         sample_image: {
             type: Sequelize.STRING
         },
@@ -17,5 +17,4 @@ export const Images = (sequelize, Sequelize) => {
             updatedAt: false,
         }
     );
-    return images;
 }
