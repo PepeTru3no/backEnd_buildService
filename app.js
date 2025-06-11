@@ -20,12 +20,12 @@ if(process.env.NETLIFY){
     prefixNetlify='/.netlify/functions';
 }
 
-app.use(`${prefixNetlify}/.netlify/functions/services`, servicesRoutes);
-app.use(`${prefixNetlify}/.netlify/functions/users`, usersRoutes);
-app.use(`${prefixNetlify}/.netlify/functions/images`, imagesRoutes);
-app.use(`${prefixNetlify}/.netlify/functions/comments`, commentRoutes);
-app.use(`${prefixNetlify}/.netlify/functions/favorites`, favoriteRoutes);
-app.use(`${prefixNetlify}/.netlify/functions/uploads`, express.static("uploads"));
+app.use(`${prefixNetlify}/services`, servicesRoutes);
+app.use(`${prefixNetlify}/users`, usersRoutes);
+app.use(`${prefixNetlify}/images`, imagesRoutes);
+app.use(`${prefixNetlify}/comments`, commentRoutes);
+app.use(`${prefixNetlify}/favorites`, favoriteRoutes);
+app.use(`${prefixNetlify}/uploads`, express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 export default app;
