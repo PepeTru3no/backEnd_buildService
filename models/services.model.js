@@ -1,4 +1,6 @@
-export const Services = (sequelize, Sequelize) => {
+import sequelize from "../db/connect.js";
+
+export const Services = (Sequelize) => {
     const services = sequelize.define("services", {
         name: {
             type: Sequelize.STRING
