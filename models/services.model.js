@@ -13,7 +13,13 @@ export const Services = (sequelize, Sequelize) => {
               model: 'users',
               key: 'id'
             }            
-        }
+        },
+        stars: {
+            type: Sequelize.DECIMAL
+        },
+        category: {
+            type: Sequelize.STRING
+        },
     },
         {
             createdAt: false,

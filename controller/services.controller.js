@@ -4,16 +4,22 @@ const { services: Services, images: Images, comments: Comments, users: Users } =
 const Op = db.Sequelize.Op;
 
 export const getServices = async (req, res) => {
-    const { limit, page, order } = req.query;
+    const { limit, page, order, category } = req.query;
     const offset = page ? (page - 1) * limit : 0;
     const [field, direction] = order ? order.split('_') : 'id_ASC'.split('_');
+    const filter = category ? {
+        
+            category: category
+        
+    } : "";
     const pagination = {
-        limit: limit, // Número de registros por página
+        where: filter,
+        limit: limit || 5, // Número de registros por página
         offset: offset, // Desplazamiento
         order: [[field, direction]],
     }
     try {
-        const { rows: services, count } = await Services.findAndCountAll(pagination);
+        const { rows: services, count } = await Services.findAndCountAll(pagination );
         let response = await Promise.all(
             services.map(async service => {
                 const imgs = await Images.findAll({ where: { service_id: service.dataValues.id } });
@@ -22,6 +28,8 @@ export const getServices = async (req, res) => {
                     id: service.dataValues.id,
                     name: service.dataValues.name,
                     description: service.dataValues.description,
+                    stars: service.dataValues.stars,
+                    category: service.dataValues.category,
                     images: imgs.map(img => img.dataValues),
                     user: user
                 };
@@ -56,6 +64,8 @@ export const getServiceById = async (req, res) => {
             id: id,
             name: service.name,
             description: service.description,
+            stars: service.stars,
+            category: service.category,
             images: imgs.map(img => img.dataValues),
             comments: comments.map(comm => comm.dataValues)
         };
@@ -67,3 +77,17 @@ export const getServiceById = async (req, res) => {
     }
 
 };
+
+export const addStars = async (req, res) => {
+    const { id, stars } = req.data;
+    try {
+        const [num] = await Services.update({ stars: stars }, { where: { id: id } });
+        if (num === 1) {
+            res.status(200).json({ message: "Estrellas actualizadas", stars: stars });
+        } else {
+            res.status(404).json({ message: "El registro no existe" });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}

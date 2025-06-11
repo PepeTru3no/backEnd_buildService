@@ -7,6 +7,12 @@ const sequelize = new Sequelize(
     process.env.DB_PASS, {
     host: process.env.DB_HOST,
     dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true, // Enforce SSL
+            rejectUnauthorized: false, // Set to true if you want to validate the server's certificate
+        },
+    },
     pool: {
         max: 5,
         min: 0,

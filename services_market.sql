@@ -9,7 +9,7 @@ CREATE TABLE "users" (
 	"registration_date" TIMESTAMP NOT NULL,
 	"state" VARCHAR(10) NOT NULL DEFAULT 'asset',
 	"username" VARCHAR(20) NOT NULL UNIQUE,
-	"password" VARCHAR(50) NOT NULL,
+	"password" VARCHAR(255) NOT NULL,
 	"phone" VARCHAR(20) NOT NULL,
 	"stars" DECIMAL,
 	PRIMARY KEY("id")
@@ -23,6 +23,7 @@ CREATE TABLE "services" (
 	"description" TEXT NOT NULL,
 	"user_id" INTEGER NOT NULL,
 	"stars" DECIMAL,
+	"category" VARCHAR(60),
 	PRIMARY KEY("id")
 );
 CREATE INDEX "services_index_0"
