@@ -11,8 +11,8 @@ const sequelize = new Sequelize(
     dialectModule: pg, //especifica pg a utilizar
     dialectOptions: {
         ssl: {
-            require: true, // Enforce SSL
-            rejectUnauthorized: false, // Set to true if you want to validate the server's certificate
+            require: true,
+            rejectUnauthorized: false,
         },
     },
     pool: {

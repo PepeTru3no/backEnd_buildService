@@ -9,7 +9,7 @@ import { SavedService } from "./saved_service.model.js";
 const db={};
 db.Sequelize= Sequelize;
 db.sequelize= sequelize;
-db.services=Services(Sequelize);
+db.services=Services(sequelize,Sequelize);
 db.users=Users(sequelize,Sequelize);
 db.comments= Comments(sequelize, Sequelize);
 db.images= Images(sequelize,Sequelize);
