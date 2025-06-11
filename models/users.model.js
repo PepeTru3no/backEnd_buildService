@@ -1,34 +1,34 @@
-export const Users = (sequelize, Sequelize) => {
+export const Users = (sequelize, DataType) => {
     return sequelize.define("users", {
         name: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         last_name: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         email: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         age: {
-            type: Sequelize.INTEGER
+            type: DataType.INTEGER
         },
         registration_date: {
-            type: Sequelize.DATE
+            type: DataType.DATE
         },
         state: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         username: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         password: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         phone: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         stars: {
-            type: Sequelize.DECIMAL
+            type: DataType.DECIMAL
         }
     },
         {

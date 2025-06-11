@@ -1,7 +1,7 @@
-export const SavedService = (sequelize, Sequelize) => {
+export const SavedService = (sequelize, DataType) => {
     return sequelize.define("saved_services", {
         user_id: {
-            type: Sequelize.INTEGER,
+            type: DataType.INTEGER,
             allowNull: false,
             references: {        
               model: 'users',
@@ -9,7 +9,7 @@ export const SavedService = (sequelize, Sequelize) => {
             }            
         },
         service_id: {
-            type: Sequelize.INTEGER,
+            type: DataType.INTEGER,
             allowNull: false,
             references: {         
               model: 'services',

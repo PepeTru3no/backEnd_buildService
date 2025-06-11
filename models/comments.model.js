@@ -1,10 +1,10 @@
-export const Comments = (sequelize, Sequelize) => {
+export const Comments = (sequelize, DataType) => {
     return sequelize.define("comments", {
         comment: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         user_id: {
-            type: Sequelize.INTEGER,
+            type: DataType.INTEGER,
             allowNull: false,
             references: {        
               model: 'users',
@@ -12,14 +12,14 @@ export const Comments = (sequelize, Sequelize) => {
             }            
         },
         answer_id: {
-            type: Sequelize.INTEGER,
+            type: DataType.INTEGER,
             references: {         
               model: 'comments',
               key: 'id'
             }            
         },
         service_id: {
-            type: Sequelize.INTEGER,
+            type: DataType.INTEGER,
             references: {         
               model: 'services',
               key: 'id'

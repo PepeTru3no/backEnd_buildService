@@ -1,10 +1,10 @@
-export const Images = (sequelize, Sequelize) => {
+export const Images = (sequelize, DataType) => {
     return sequelize.define("images", {
         sample_image: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         service_id: {
-            type: Sequelize.INTEGER,
+            type: DataType.INTEGER,
             allowNull: false,
             references: {         
               model: 'services',

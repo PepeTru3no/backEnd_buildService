@@ -1,13 +1,13 @@
-export const Services = (sequelize, Sequelize) => {
+export const Services = (sequelize, DataType) => {
     return sequelize.define("services", {
         name: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         description: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
         user_id: {
-            type: Sequelize.INTEGER,
+            type: DataType.INTEGER,
             allowNull: false,
             references: {         
               model: 'users',
@@ -15,10 +15,10 @@ export const Services = (sequelize, Sequelize) => {
             }            
         },
         stars: {
-            type: Sequelize.DECIMAL
+            type: DataType.DECIMAL
         },
         category: {
-            type: Sequelize.STRING
+            type: DataType.STRING
         },
     },
         {
