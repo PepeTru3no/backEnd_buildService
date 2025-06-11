@@ -1,5 +1,6 @@
 [functions]
 directory = "functions"
+external_node_modules = ["sequelize", "pg"]
 
 [[redirects]]
 from = "/api/*"
