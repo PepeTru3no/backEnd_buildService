@@ -2,7 +2,7 @@
 directory = "functions"
 
 [[redirects]]
-from = "/*"
-to = "/.netlify/functions/server"
+from = "/api/*"
+to = "/.netlify/functions/server/:splat"
 status = 200
 force = true
