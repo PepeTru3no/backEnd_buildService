@@ -47,7 +47,7 @@ export const addStratMiddleware = async (req, res, next) => {
             message: "Todos los campos son requeridos y deben ser numéricos",
           });
       }
-      const nStars = (Number(stars) + Number(newStars)) / 2;
+      const nStars =Number(stars)===0?Number(newStars) :(Number(stars) + Number(newStars)) / 2;
       req.data = {
         id: Number(id),
         stars: nStars,

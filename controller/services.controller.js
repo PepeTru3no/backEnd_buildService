@@ -1,16 +1,14 @@
 import { where } from "sequelize";
 import db from "../models/index.js";
-const { services: Services, images: Images, comments: Comments, users: Users } = db;
+const { services: Services, images: Images, comments: Comments, users: Users, saved_service: SavedService } = db;
 const Op = db.Sequelize.Op;
 
 export const getServices = async (req, res) => {
-    const { limit, page, order, category } = req.query;
+    const { limit, page, order, category, user_id } = req.query;
     const offset = page ? (page - 1) * limit : 0;
     const [field, direction] = order ? order.split('_') : 'id_ASC'.split('_');
-    const filter = category ? {
-        
-            category: category
-        
+    const filter = category ? {        
+            category: category        
     } : "";
     const pagination = {
         where: filter,
@@ -24,11 +22,13 @@ export const getServices = async (req, res) => {
             services.map(async service => {
                 const imgs = await Images.findAll({ where: { service_id: service.dataValues.id } });
                 const user = await Users.findOne({ where: { id: service.dataValues.user_id } });
+                const fav =user_id? await SavedService.findOne({ where: { user_id: user_id, service_id: service.dataValues.id } }): false;
                 return {
                     id: service.dataValues.id,
                     name: service.dataValues.name,
                     description: service.dataValues.description,
                     stars: service.dataValues.stars,
+                    isFav: !!fav,
                     category: service.dataValues.category,
                     images: imgs.map(img => img.dataValues),
                     user: user

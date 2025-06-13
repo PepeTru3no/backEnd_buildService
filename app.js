@@ -6,7 +6,7 @@ import servicesRoutes from "./routers/services.router.js";
 import usersRoutes from "./routers/users.router.js";
 import imagesRoutes from "./routers/images.router.js";
 import commentRoutes from "./routers/comments.router.js";
-import favoriteRoutes from "./routers/saved_service.model.js";
+import favoriteRoutes from "./routers/saved_service.router.js";
 import bodyParser from "body-parser";
 
 config();
