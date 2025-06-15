@@ -7,8 +7,8 @@ export const getServices = async (req, res) => {
     const { limit, page, order, category, user_id } = req.query;
     const offset = page ? (page - 1) * limit : 0;
     const [field, direction] = order ? order.split('_') : 'id_ASC'.split('_');
-    const filter = category ? {        
-            category: category        
+    const filter = category ? {
+        category: category
     } : "";
     const pagination = {
         where: filter,
@@ -60,6 +60,16 @@ export const getServiceById = async (req, res) => {
         }
         const imgs = await Images.findAll({ where: { service_id: id } });
         const comments = await Comments.findAll({ where: { service_id: id } });
+        const commentAndUser = await Promise.all(
+            comments.map(async comm => {
+                const comment = comm.dataValues;
+                const user = await Users.findOne({ where: { id: comment.user_id } });
+                return {
+                    comment,
+                    user
+                }
+            })
+        );
         const response = {
             id: id,
             name: service.name,
@@ -67,7 +77,7 @@ export const getServiceById = async (req, res) => {
             stars: service.stars,
             category: service.category,
             images: imgs.map(img => img.dataValues),
-            comments: comments.map(comm => comm.dataValues)
+            comments: commentAndUser
         };
 
         res.status(200).json(response);
