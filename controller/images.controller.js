@@ -32,3 +32,8 @@ export const createImage = async (req, res) => {
         res.status(500).json({message: err.message})
     }
 }
+
+export const deleteImage= async (req, res) => {
+    const {id} = req.params;
+    
+}
