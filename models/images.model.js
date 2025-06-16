@@ -5,9 +5,17 @@ export const Images = (sequelize, DataType) => {
         },
         service_id: {
             type: DataType.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {         
               model: 'services',
+              key: 'id'
+            }            
+        },
+        user_id: {
+            type: DataType.INTEGER,
+            allowNull: true,
+            references: {         
+              model: 'users',
               key: 'id'
             }            
         }

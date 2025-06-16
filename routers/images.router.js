@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { createImage, getImages } from "../controller/images.controller.js";
-import { createImageMiddleware } from "../middleware/images.middleware.js";
+import { createImage, getImages, createImageUser} from "../controller/images.controller.js";
 import multer from "multer";
 
 const router = Router();
@@ -16,6 +15,7 @@ var storage = multer.diskStorage({
   var upload = multer({ storage: storage })
 
 router.get('/:id', getImages);
+router.post('/user/:id', upload.single('file'), createImageUser);
 router.post('/:id', upload.array('file', 50), createImage);
 
 export default router;
