@@ -4,12 +4,30 @@ const { services: Services, images: Images, comments: Comments, users: Users, sa
 const Op = db.Sequelize.Op;
 
 export const getServices = async (req, res) => {
-    const { limit, page, order, category, user_id } = req.query;
+    const { limit, page, order, category, user_id, search } = req.query;
     const offset = page ? (page - 1) * limit : 0;
     const [field, direction] = order ? order.split('_') : 'id_ASC'.split('_');
-    const filter = category ? {
-        category: category
-    } : "";
+    let filter = '';
+    if (category && search) {
+        filter = {
+            category: category,
+            name: {
+                [Op.iLike]: `${search}%`
+            }
+        }
+    } else if (category && !search) {
+        filter = {
+            category: category
+        }
+    } else if (!category && search) {
+        filter = {
+            name: {
+                [Op.iLike]: `${search}%`
+            }
+        }
+    }
+    console.log(filter);
+
     const pagination = {
         where: filter,
         limit: limit || 5, // Número de registros por página
