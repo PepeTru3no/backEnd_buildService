@@ -1,6 +1,7 @@
 import { where } from "sequelize";
 import db from "../models/index.js";
 const Comments = db.comments;
+const Users = db.users;
 const Op = db.Sequelize.Op;
 
 export const getComments = async (req, res) => {
@@ -10,7 +11,18 @@ export const getComments = async (req, res) => {
     }
     try {
         const comments = await Comments.findAll(pagination);
-        res.json(comments);
+        const response = await Promise.all(
+            comments.map(async comment => {
+                const user = await Users.findOne({ where: { id: comment.dataValues.user_id } });
+                return {
+                    id: comment.dataValues.id,
+                    comment: comment.dataValues.comment,
+                    user: `${user.name} ${user.last_name}`
+                };
+            }
+            )
+        );
+        res.json(response);
     } catch (error) {
         res.status(500).json({ 'message': error.message });
     }
@@ -29,9 +41,9 @@ export const createComment = async (req, res) => {
 export const getCommentsByService = async (req, res) => {
     const { id } = req.params;
     try {
-        const comments=await Comments.findAll({where:{service_id:id}});
+        const comments = await Comments.findAll({ where: { service_id: id } });
         res.status(200).json(comments);
     } catch (error) {
         res.status(500).json({ message: error.message });
-    }    
+    }
 }

@@ -26,7 +26,6 @@ export const getServices = async (req, res) => {
             }
         }
     }
-    console.log(filter);
 
     const pagination = {
         where: filter,

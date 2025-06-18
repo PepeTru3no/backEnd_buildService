@@ -2,6 +2,7 @@ import { where } from "sequelize";
 import db from "../models/index.js";
 const Images = db.images;
 const Op = db.Sequelize.Op;
+import fs from 'fs';
 
 export const getImages = async (req, res) => {
     try {
@@ -33,11 +34,6 @@ export const createImage = async (req, res) => {
     }
 }
 
-export const deleteImage = async (req, res) => {
-    const { id } = req.params;
-
-}
-
 export const createImageUser = async (req, res) => {
     const file = req.file;
     const user_id = req.params.id;
@@ -45,6 +41,18 @@ export const createImageUser = async (req, res) => {
         return res.status(400).json({ message: 'Por favor, elige un archivo' });
     }
     try {
+        const userImage= await Images.findOne({where:{user_id:user_id}});
+        if(userImage){
+            const fileName= userImage.sample_image;
+            fs.unlink(`./uploads/${fileName}`,error=>{
+                if(error){
+                    console.log("Archivo no borrado por: ", error)
+                }else{
+                    console.log("archivo eliminado de: ", fileName);
+                }                
+            });
+            await Images.destroy({where:{user_id:user_id}});
+        }
         const data = {
             sample_image: file.filename,
             user_id: user_id
