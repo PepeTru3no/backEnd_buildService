@@ -7,6 +7,7 @@ export const getServices = async (req, res) => {
     const { limit, page, order, category, user_id, search } = req.query;
     const offset = page ? (page - 1) * limit : 0;
     const [field, direction] = order ? order.split('_') : 'id_ASC'.split('_');
+    const field2= field==="creation"?'creation_date':field;
     let filter = '';
     if (category && search) {
         filter = {
@@ -31,7 +32,7 @@ export const getServices = async (req, res) => {
         where: filter,
         limit: limit || 5, // Número de registros por página
         offset: offset, // Desplazamiento
-        order: [[field, direction]],
+        order: [[field2, direction]],
     }
     try {
         const { rows: services, count } = await Services.findAndCountAll(pagination);
@@ -45,6 +46,8 @@ export const getServices = async (req, res) => {
                     name: service.dataValues.name,
                     description: service.dataValues.description,
                     stars: service.dataValues.stars,
+                    price: service.dataValues.price,
+                    creation_date:service.dataValues.creation_date,
                     isFav: !!fav,
                     category: service.dataValues.category,
                     images: imgs.map(img => img.dataValues),
@@ -93,6 +96,8 @@ export const getServiceById = async (req, res) => {
             description: service.description,
             stars: service.stars,
             category: service.category,
+            price: service.price,
+            creation_date:service.creation_date,
             images: imgs.map(img => img.dataValues),
             comments: commentAndUser
         };
@@ -167,9 +172,9 @@ export const deleteService = async (req, res) => {
 
 export const updateService = async (req, res) => {
     const { id } = req.params;
-    const { name, description, user_id, category } = req.data;
+    const { name, description, user_id, category, price } = req.data;
     try {
-        const [num] = await Services.update({ name: name, description: description, category: category }, { where: { id: id, user_id: user_id } });
+        const [num] = await Services.update({ name: name, description: description, category: category, price:price }, { where: { id: id, user_id: user_id } });
         if (num === 1) {
             res.status(200).json({ message: "servivio actualizadas correctamente" });
         } else {

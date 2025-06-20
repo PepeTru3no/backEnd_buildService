@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { config } from 'dotenv';
 import { eliminarTildes } from '../util/util.js';
+import { now } from 'sequelize/lib/utils';
 config();
 export const createServiceMiddleaware = async (req, res, next) => {
-    const { name, description, user_id, category } = req.body;
+    const { name, description, user_id, category, price } = req.body;
     const Authorization = req.header("Authorization");
     const token = Authorization ? Authorization.split("Bearer ")[1] : false;;
     const url = req.url;
@@ -13,7 +14,7 @@ export const createServiceMiddleaware = async (req, res, next) => {
 
         if (!token) {
             return res.status(404).json({ message: 'Usuario no autorizado' });
-        }else if(!name.trim() || !description.trim() || isNaN(user_id) || !category.trim()){
+        }else if(!name.trim() || !description.trim() || isNaN(user_id) || !category.trim() || isNaN(price)){
             return res.status(400).json({ message: 'Todos los campos deben ser completados' });
         }else if(!jwt.verify(token, secret)){
             return res.status(400).json({ message: 'El token enviado no es valido' });
@@ -21,11 +22,14 @@ export const createServiceMiddleaware = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
+    const date= now();
     req.data={
         name,
         description,
         user_id,
-        category:eliminarTildes(category)
+        category:eliminarTildes(category),
+        price: price,
+        creation_date: date
     }
     next();
 }
@@ -59,7 +63,7 @@ export const addStratMiddleware = async (req, res, next) => {
   };
 
   export const updateServiceMiddleware = async (req, res, next) => {
-    const { name, description, user_id, category } = req.body;
+    const { name, description, user_id, category, price } = req.body;
     const Authorization = req.header("Authorization");
     const token = Authorization ? Authorization.split("Bearer ")[1] : false;;
     const url = req.url;
@@ -69,7 +73,7 @@ export const addStratMiddleware = async (req, res, next) => {
 
         if (!token) {
             return res.status(404).json({ message: 'Usuario no autorizado' });
-        }else if(!name.trim() || !description.trim() || isNaN(user_id) || !category.trim()){
+        }else if(!name.trim() || !description.trim() || isNaN(user_id) || !category.trim() || isNaN(price)){
             return res.status(400).json({ message: 'Todos los campos deben ser completados' });
         }else if(!jwt.verify(token, secret)){
             return res.status(400).json({ message: 'El token enviado no es valido' });
@@ -81,7 +85,8 @@ export const addStratMiddleware = async (req, res, next) => {
         name,
         description,
         user_id,
-        category:eliminarTildes(category)
+        category:eliminarTildes(category),
+        price:price
     }
     next();
   }
