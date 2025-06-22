@@ -17,8 +17,14 @@ export const Services = (sequelize, DataType) => {
         stars: {
             type: DataType.DECIMAL
         },
+        price: {
+            type: DataType.DECIMAL
+        },
         category: {
             type: DataType.STRING
+        },
+        creation_date: {
+            type: DataType.DATE
         },
     },
         {
