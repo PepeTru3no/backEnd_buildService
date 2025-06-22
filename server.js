@@ -2,10 +2,10 @@
 import app from "./app.js";
 import db from "./models/index.js";
 
-db.sequelize
+/* db.sequelize
   .sync({ alter: true }) // o force: false
   .then(() => console.log("Base de datos sincronizada con notificaciones"))
-  .catch((err) => console.error("Error al sincronizar la base de datos:", err));
+  .catch((err) => console.error("Error al sincronizar la base de datos:", err)); */
 
 const PORT = process.env.SERVER_PORT || 3000;
 

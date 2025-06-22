@@ -8,7 +8,7 @@ const isLocalhost = process.env.DB_HOST === "localhost";
 
 // Configurar SSL solo si NO estás en local
 const dialectOptions = isLocalhost
-  ? {} // sin SSL
+  ? "" // sin SSL
   : {
       ssl: {
         require: true,

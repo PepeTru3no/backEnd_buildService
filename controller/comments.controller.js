@@ -34,13 +34,13 @@ export const createComment = async (req, res) => {
 
     const serviceId = req.body.service_id;
     const service = await Services.findByPk(serviceId);
-
-    if (service && service.userId !== req.user.id) {
+    if (service && service.user_id !== req.user.id) {
       await Notifications.create({
-        userId: service.userId,
-        message: `Nuevo comentario en tu servicio "${service.title}"`,
+        userId: service.user_id,
+        message: `Nuevo comentario en tu servicio "${service.name}"`,
         seen: false,
       });
+      
     }
 
     res.status(200).json(comment);

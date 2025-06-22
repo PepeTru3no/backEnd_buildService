@@ -6,7 +6,7 @@ export const createCommentMiddleware = async (req, res, next) => {
     const Authorization = req.header("Authorization");
     const token = Authorization ? Authorization.split("Bearer ")[1] : false;
     const url = req.url;
-    const secret = process.env.SECRET;
+    const secret = process.env.JWT_SECRET;
     console.log(`Fecha de la consulta: ${new Date()}; URL consultada: ${url}; Datos recibidas: `, req.body);
     try {
 

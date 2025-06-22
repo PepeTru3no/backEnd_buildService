@@ -52,7 +52,7 @@ export const addStars = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, pass } = req.data;
-  const secret = process.env.SECRET;
+  const secret = process.env.JWT_SECRET;
   try {
     const user = await Users.findOne({ where: { email } });
     if (!user) {

@@ -10,7 +10,7 @@ export const authMiddleware = (req, res, next) => {
     return res.status(401).json({ error: "Token no proporcionado" });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split("Bearer ")[1];
 
   try {
     const decoded = jwt.verify(token, secretKey);
