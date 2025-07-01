@@ -3,6 +3,10 @@ import db from "../models/index.js";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 import bcrypt from "bcryptjs";
+import crypto from 'crypto';
+import { sendVerificationEmail } from "../util/mailer.js";
+import { where } from "sequelize";
+import fs from 'fs';
 
 config();
 
@@ -27,10 +31,13 @@ export const getUsers = async (req, res) => {
 export const createUser = async (req, res) => {
   const user = req.data;
   try {
+    const token = crypto.randomBytes(32).toString('hex');
+    user.verification_token = token;
     const data = await Users.create(user);
     // No enviar contraseña en la respuesta
-    const { password, ...userWithoutPass } = data.dataValues;
-    res.status(201).json(userWithoutPass);
+    //const { password, ...userWithoutPass } = data.dataValues;
+    await sendVerificationEmail(user.email, token);
+    res.status(201).json({ message: `Usuario registrado con exito, se envio un emial de verificacion a ${user.email}.` });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -55,6 +62,9 @@ export const login = async (req, res) => {
   const secret = process.env.JWT_SECRET;
   try {
     const user = await Users.findOne({ where: { email } });
+    if (user.state !== "activo") {
+      return res.status(401).json({ message: "Verifica tu correo antes de iniciar sesion" });
+    }
     if (!user) {
       return res.status(400).json({ message: "Usuario inexistente" });
     }
@@ -106,5 +116,25 @@ export const updateUser = async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+}
+
+export const verify = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const user = await Users.findOne({ where: { verification_token: token } });
+    if(!user) return res.status(404).send("Token inválido.");
+    user.state="activo";
+    user.verification_token=null;
+    await user.save();
+    fs.readFile('./util/verify.html', (err, data)=>{
+      if(err){
+        return res.status(400).json({ message: err.message });
+      }
+      res.end(data);
+    });
+    //res.status(200).json({message:"Cuenta verificada, ahora puedes iniciar sesion"});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 }

@@ -29,6 +29,9 @@ export const Users = (sequelize, DataType) => {
         },
         stars: {
             type: DataType.DECIMAL
+        },
+        verification_token: {
+            type: DataType.STRING
         }
     },
         {

@@ -72,7 +72,7 @@ export const loginMiddleware = async (req, res, next) => {
 
 export const registerMiddleware = async (req, res, next) => {
   const date = now();
-  const { name, last_name, email, age, password, phone } = req.body;
+  const { name, last_name, email, age, password, phone, username } = req.body;
   const url = req.url;
   let passCrypt;
   let state;
@@ -98,7 +98,10 @@ export const registerMiddleware = async (req, res, next) => {
       !password.trim() ||
       !phone ||
       typeof phone !== "string" ||
-      !phone.trim()
+      !phone.trim()||
+      !username ||
+      typeof username !== "string" ||
+      !username.trim()
     ) {
       return res
         .status(400)
@@ -124,14 +127,14 @@ export const registerMiddleware = async (req, res, next) => {
     }
 
     passCrypt = bcrypt.hashSync(password);
-    state = "activo";
+    state = "inactivo";
 
     req.data = {
       name,
       last_name,
       email,
       age: Number(age),
-      username: name + last_name,
+      username,
       password: passCrypt,
       phone,
       state,
